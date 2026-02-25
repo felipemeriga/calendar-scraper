@@ -1,5 +1,8 @@
 use crate::models::{Event, WeekPeriod};
-use chrono::{DateTime, Datelike, Duration, TimeZone, Timelike, Utc, Weekday};
+use chrono::{DateTime, Datelike, Duration, TimeZone, Utc, Weekday};
+
+#[cfg(test)]
+use chrono::Timelike;
 
 /// Returns the current week period (Monday 00:00 to Sunday 23:59)
 pub fn get_current_week() -> WeekPeriod {
@@ -49,12 +52,6 @@ pub fn filter_events_by_week(events: Vec<Event>, week: &WeekPeriod) -> Vec<Event
             event.start <= week.end && event.end >= week.start
         })
         .collect()
-}
-
-/// Filters events that occur in the current week
-pub fn filter_current_week_events(events: Vec<Event>) -> Vec<Event> {
-    let week = get_current_week();
-    filter_events_by_week(events, &week)
 }
 
 #[cfg(test)]

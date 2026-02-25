@@ -2,4 +2,4 @@
 
 mod parser;
 
-pub use parser::{fetch_ics, parse_ics, IcsError};
+pub use parser::{fetch_ics, IcsError};

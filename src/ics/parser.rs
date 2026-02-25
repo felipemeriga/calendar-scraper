@@ -114,7 +114,7 @@ pub fn parse_ics(ics_content: &str) -> Result<Vec<Event>, IcsError> {
 
             let end = event
                 .get_end()
-                .and_then(|dt| date_perhaps_time_to_utc(dt))
+                .and_then(date_perhaps_time_to_utc)
                 .unwrap_or(start);
 
             // Determine if it's an all-day event
