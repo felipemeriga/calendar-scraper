@@ -1,0 +1,394 @@
+{
+	"info": {
+		"name": "Calendar Scraper API",
+		"description": "REST API for fetching and filtering calendar events from ICS files with multi-calendar support, authentication, and timezone conversion.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{api_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:8080",
+			"type": "string"
+		},
+		{
+			"key": "api_token",
+			"value": "testtoken",
+			"type": "string"
+		},
+		{
+			"key": "calendar_name",
+			"value": "cosm",
+			"type": "string"
+		},
+		{
+			"key": "timezone",
+			"value": "America/New_York",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Health Check",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/health",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"health"
+					]
+				},
+				"description": "Health check endpoint - no authentication required. Returns service status."
+			},
+			"response": []
+		},
+		{
+			"name": "List Calendars",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/calendars",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"calendars"
+					]
+				},
+				"description": "Get a list of all configured calendars from calendars.toml"
+			},
+			"response": []
+		},
+		{
+			"name": "Weekly Events - All Calendars",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/events/weekly/all",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"events",
+						"weekly",
+						"all"
+					]
+				},
+				"description": "Get weekly events from all configured calendars. Returns events grouped by calendar name."
+			},
+			"response": []
+		},
+		{
+			"name": "Weekly Events - All Calendars (with Timezone)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/events/weekly/all?timezone={{timezone}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"events",
+						"weekly",
+						"all"
+					],
+					"query": [
+						{
+							"key": "timezone",
+							"value": "{{timezone}}",
+							"description": "IANA timezone name (e.g., America/New_York, Europe/London)"
+						}
+					]
+				},
+				"description": "Get weekly events from all calendars with times converted to specified timezone."
+			},
+			"response": []
+		},
+		{
+			"name": "Weekly Events - Specific Calendar",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/calendars/{{calendar_name}}/events/weekly",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"calendars",
+						"{{calendar_name}}",
+						"events",
+						"weekly"
+					]
+				},
+				"description": "Get weekly events from a specific calendar. Replace {calendar_name} with the calendar name from your calendars.toml"
+			},
+			"response": []
+		},
+		{
+			"name": "Weekly Events - Specific Calendar (with Timezone)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/calendars/{{calendar_name}}/events/weekly?timezone={{timezone}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"calendars",
+						"{{calendar_name}}",
+						"events",
+						"weekly"
+					],
+					"query": [
+						{
+							"key": "timezone",
+							"value": "{{timezone}}",
+							"description": "IANA timezone name"
+						}
+					]
+				},
+				"description": "Get weekly events from a specific calendar with timezone conversion."
+			},
+			"response": []
+		},
+		{
+			"name": "Today's Events - All Calendars",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/events/today/all",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"events",
+						"today",
+						"all"
+					]
+				},
+				"description": "Get today's events (00:00:00 to 23:59:59 UTC) from all configured calendars."
+			},
+			"response": []
+		},
+		{
+			"name": "Today's Events - All Calendars (with Timezone)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/events/today/all?timezone={{timezone}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"events",
+						"today",
+						"all"
+					],
+					"query": [
+						{
+							"key": "timezone",
+							"value": "{{timezone}}",
+							"description": "IANA timezone name"
+						}
+					]
+				},
+				"description": "Get today's events from all calendars with timezone conversion."
+			},
+			"response": []
+		},
+		{
+			"name": "Today's Events - Specific Calendar",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/calendars/{{calendar_name}}/events/today",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"calendars",
+						"{{calendar_name}}",
+						"events",
+						"today"
+					]
+				},
+				"description": "Get today's events from a specific calendar."
+			},
+			"response": []
+		},
+		{
+			"name": "Today's Events - Specific Calendar (with Timezone)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/calendars/{{calendar_name}}/events/today?timezone={{timezone}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"calendars",
+						"{{calendar_name}}",
+						"events",
+						"today"
+					],
+					"query": [
+						{
+							"key": "timezone",
+							"value": "{{timezone}}",
+							"description": "IANA timezone name"
+						}
+					]
+				},
+				"description": "Get today's events from a specific calendar with timezone conversion."
+			},
+			"response": []
+		},
+		{
+			"name": "Today + Tomorrow Events - All Calendars",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/events/today-and-tomorrow/all",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"events",
+						"today-and-tomorrow",
+						"all"
+					]
+				},
+				"description": "Get events for today and tomorrow from all configured calendars."
+			},
+			"response": []
+		},
+		{
+			"name": "Today + Tomorrow Events - All Calendars (with Timezone)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/events/today-and-tomorrow/all?timezone={{timezone}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"events",
+						"today-and-tomorrow",
+						"all"
+					],
+					"query": [
+						{
+							"key": "timezone",
+							"value": "{{timezone}}",
+							"description": "IANA timezone name"
+						}
+					]
+				},
+				"description": "Get today and tomorrow's events from all calendars with timezone conversion."
+			},
+			"response": []
+		},
+		{
+			"name": "Today + Tomorrow Events - Specific Calendar",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/calendars/{{calendar_name}}/events/today-and-tomorrow",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"calendars",
+						"{{calendar_name}}",
+						"events",
+						"today-and-tomorrow"
+					]
+				},
+				"description": "Get today and tomorrow's events from a specific calendar."
+			},
+			"response": []
+		},
+		{
+			"name": "Today + Tomorrow Events - Specific Calendar (with Timezone)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/calendars/{{calendar_name}}/events/today-and-tomorrow?timezone={{timezone}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"calendars",
+						"{{calendar_name}}",
+						"events",
+						"today-and-tomorrow"
+					],
+					"query": [
+						{
+							"key": "timezone",
+							"value": "{{timezone}}",
+							"description": "IANA timezone name"
+						}
+					]
+				},
+				"description": "Get today and tomorrow's events from a specific calendar with timezone conversion."
+			},
+			"response": []
+		}
+	]
+}
