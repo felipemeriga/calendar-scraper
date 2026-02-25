@@ -55,6 +55,8 @@ EXPOSE 8080
 # Set environment variables
 ENV RUST_LOG=info
 ENV CALENDARS_CONFIG=/app/config/calendars.toml
+ENV HOST=0.0.0.0
+ENV PORT=8080
 
 # Run the binary
 CMD ["/app/calendar-scraper"]

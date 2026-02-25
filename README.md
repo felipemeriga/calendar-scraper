@@ -234,7 +234,7 @@ url = "https://calendar.google.com/calendar/ical/YOUR_EMAIL/public/basic.ics"
 |----------|-------------|---------|
 | `API_TOKEN` | Authentication token for API access | `dev-token` (dev only) |
 | `CALENDARS_CONFIG` | Path to calendars TOML file | `calendars.toml` |
-| `HOST` | Server host | `127.0.0.1` |
+| `HOST` | Server bind address | `0.0.0.0` (Docker), `127.0.0.1` (local dev) |
 | `PORT` | Server port | `8080` |
 
 ## Docker Deployment

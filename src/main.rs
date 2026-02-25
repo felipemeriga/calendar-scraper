@@ -51,8 +51,19 @@ async fn main() -> std::io::Result<()> {
         }
     };
 
-    let host = "127.0.0.1";
-    let port = 8080;
+    // Read host and port from environment variables with defaults
+    // Default to 0.0.0.0 for Docker compatibility, but can be overridden
+    let host = env::var("HOST").unwrap_or_else(|_| {
+        info!("HOST environment variable not set, using default: 0.0.0.0");
+        "0.0.0.0".to_string()
+    });
+    let port = env::var("PORT")
+        .ok()
+        .and_then(|p| p.parse::<u16>().ok())
+        .unwrap_or_else(|| {
+            info!("PORT environment variable not set or invalid, using default: 8080");
+            8080
+        });
 
     info!("Starting Calendar Scraper API at http://{}:{}", host, port);
     info!("Health check: http://{}:{}/health", host, port);
@@ -77,7 +88,7 @@ async fn main() -> std::io::Result<()> {
             .app_data(config_data.clone())
             .configure(api::configure)
     })
-    .bind((host, port))?
+    .bind((host.as_str(), port))?
     .run()
     .await
 }

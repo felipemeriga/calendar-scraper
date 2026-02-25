@@ -11,6 +11,8 @@ services:
       - API_TOKEN=${API_TOKEN:-testtoken}
       - CALENDARS_CONFIG=/app/config/calendars.toml
       - RUST_LOG=${RUST_LOG:-info}
+      - HOST=0.0.0.0
+      - PORT=8080
     volumes:
       # Mount your calendars.toml from host to container
       - ./calendars.toml:/app/config/calendars.toml:ro
