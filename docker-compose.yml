@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  calendar-scraper:
+    image: calendar-scraper:latest
+    container_name: calendar-scraper
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - API_TOKEN=${API_TOKEN:-testtoken}
+      - CALENDARS_CONFIG=/app/config/calendars.toml
+      - RUST_LOG=${RUST_LOG:-info}
+    volumes:
+      # Mount your calendars.toml from host to container
+      - ./calendars.toml:/app/config/calendars.toml:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - calendar-network
+
+networks:
+  calendar-network:
+    driver: bridge

@@ -1,0 +1,40 @@
+# Git
+.git
+.gitignore
+
+# Rust build artifacts
+target/
+**/*.rs.bk
+*.pdb
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment and configuration files (these should be mounted)
+.env
+calendars.toml
+
+# Documentation
+*.md
+!README.md
+
+# Test files
+tests/
+
+# CI/CD
+.github/
+
+# Postman
+postman_collection.json
+POSTMAN_GUIDE.md
+
+# Other
+*.log

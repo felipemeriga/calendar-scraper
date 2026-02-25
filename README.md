@@ -237,6 +237,96 @@ url = "https://calendar.google.com/calendar/ical/YOUR_EMAIL/public/basic.ics"
 | `HOST` | Server host | `127.0.0.1` |
 | `PORT` | Server port | `8080` |
 
+## Docker Deployment
+
+### Quick Start with Docker
+
+```bash
+# Build the Docker image
+docker build -t calendar-scraper:latest .
+
+# Run with Docker (mounting your calendars.toml)
+docker run -d \
+  --name calendar-scraper \
+  -p 8080:8080 \
+  -e API_TOKEN=your-secure-token \
+  -v $(pwd)/calendars.toml:/app/config/calendars.toml:ro \
+  calendar-scraper:latest
+```
+
+### Using Docker Compose (Recommended)
+
+1. **Create your `calendars.toml`** configuration file in the project root
+
+2. **Set your API token** in `.env` file:
+```bash
+API_TOKEN=your-secure-token
+RUST_LOG=info
+```
+
+3. **Start the service**:
+```bash
+docker-compose up -d
+```
+
+4. **Check logs**:
+```bash
+docker-compose logs -f
+```
+
+5. **Stop the service**:
+```bash
+docker-compose down
+```
+
+### Push to Container Registry
+
+```bash
+# Tag the image for your registry
+docker tag calendar-scraper:latest your-registry.com/calendar-scraper:latest
+
+# Push to registry
+docker push your-registry.com/calendar-scraper:latest
+
+# Pull and run on your server
+docker pull your-registry.com/calendar-scraper:latest
+docker run -d \
+  --name calendar-scraper \
+  -p 8080:8080 \
+  -e API_TOKEN=your-secure-token \
+  -v /path/to/calendars.toml:/app/config/calendars.toml:ro \
+  your-registry.com/calendar-scraper:latest
+```
+
+### Health Check
+
+The Docker container includes a health check that verifies the service is responding:
+
+```bash
+# Check container health
+docker ps
+
+# Manual health check
+curl http://localhost:8080/health
+```
+
+### Configuration in Docker
+
+The Docker image expects configuration files to be mounted:
+
+- **calendars.toml**: Mount to `/app/config/calendars.toml`
+- **API_TOKEN**: Pass as environment variable
+
+Example `calendars.toml` location on your server:
+```bash
+/opt/calendar-scraper/calendars.toml
+```
+
+Mount command:
+```bash
+-v /opt/calendar-scraper/calendars.toml:/app/config/calendars.toml:ro
+```
+
 ## Usage
 
 ### Example with cURL
