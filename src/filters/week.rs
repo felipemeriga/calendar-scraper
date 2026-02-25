@@ -118,6 +118,7 @@ mod tests {
                 end: Utc.with_ymd_and_hms(2026, 2, 25, 11, 0, 0).unwrap(),
                 location: None,
                 all_day: false,
+                calendar: "test".to_string(),
             },
             Event {
                 id: "2".to_string(),
@@ -127,6 +128,7 @@ mod tests {
                 end: Utc.with_ymd_and_hms(2026, 2, 27, 15, 0, 0).unwrap(),
                 location: None,
                 all_day: false,
+                calendar: "test".to_string(),
             },
         ];
 
@@ -151,6 +153,7 @@ mod tests {
                 end: Utc.with_ymd_and_hms(2026, 2, 20, 11, 0, 0).unwrap(),
                 location: None,
                 all_day: false,
+                calendar: "test".to_string(),
             },
             // Event after the week
             Event {
@@ -161,6 +164,7 @@ mod tests {
                 end: Utc.with_ymd_and_hms(2026, 3, 10, 15, 0, 0).unwrap(),
                 location: None,
                 all_day: false,
+                calendar: "test".to_string(),
             },
         ];
 
@@ -185,6 +189,7 @@ mod tests {
                 end: Utc.with_ymd_and_hms(2026, 2, 24, 11, 0, 0).unwrap(),
                 location: None,
                 all_day: false,
+                calendar: "test".to_string(),
             },
             // Event starting during week but ending after week
             Event {
@@ -195,6 +200,7 @@ mod tests {
                 end: Utc.with_ymd_and_hms(2026, 3, 5, 15, 0, 0).unwrap(),
                 location: None,
                 all_day: false,
+                calendar: "test".to_string(),
             },
         ];
 
@@ -231,6 +237,7 @@ mod tests {
                 end: Utc.with_ymd_and_hms(2026, 2, 23, 1, 0, 0).unwrap(),
                 location: None,
                 all_day: false,
+                calendar: "test".to_string(),
             },
             // Event exactly at Sunday end
             Event {
@@ -241,6 +248,7 @@ mod tests {
                 end: Utc.with_ymd_and_hms(2026, 3, 1, 23, 59, 59).unwrap(),
                 location: None,
                 all_day: false,
+                calendar: "test".to_string(),
             },
         ];
 

@@ -19,3 +19,6 @@ Thumbs.db
 .env
 .env.local
 .npmrc
+
+# Config files with sensitive data
+calendars.toml

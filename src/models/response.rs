@@ -1,7 +1,7 @@
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
-use super::Event;
+use super::{Event, EventInTimezone};
 
 /// Represents a week period
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -15,6 +15,73 @@ pub struct WeekPeriod {
 pub struct WeeklyEventsResponse {
     pub week: WeekPeriod,
     pub events: Vec<Event>,
+}
+
+/// Response for weekly events endpoint with timezone conversion
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct WeeklyEventsResponseWithTz {
+    pub week: WeekPeriod,
+    pub events: Vec<EventInTimezone>,
+    pub timezone: String,
+}
+
+/// Events for a single calendar
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct CalendarEvents {
+    pub calendar_name: String,
+    pub events: Vec<Event>,
+}
+
+/// Events for a single calendar with timezone
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct CalendarEventsWithTz {
+    pub calendar_name: String,
+    pub events: Vec<EventInTimezone>,
+}
+
+/// Response for all calendars' weekly events
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct AllCalendarsWeeklyEventsResponse {
+    pub week: WeekPeriod,
+    pub calendars: Vec<CalendarEvents>,
+}
+
+/// Response for all calendars' weekly events with timezone conversion
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct AllCalendarsWeeklyEventsResponseWithTz {
+    pub week: WeekPeriod,
+    pub calendars: Vec<CalendarEventsWithTz>,
+    pub timezone: String,
+}
+
+/// Response for daily events endpoint
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct DailyEventsResponse {
+    pub day: WeekPeriod, // Reuse WeekPeriod for day period
+    pub events: Vec<Event>,
+}
+
+/// Response for daily events endpoint with timezone conversion
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct DailyEventsResponseWithTz {
+    pub day: WeekPeriod,
+    pub events: Vec<EventInTimezone>,
+    pub timezone: String,
+}
+
+/// Response for all calendars' daily events
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct AllCalendarsDailyEventsResponse {
+    pub day: WeekPeriod,
+    pub calendars: Vec<CalendarEvents>,
+}
+
+/// Response for all calendars' daily events with timezone conversion
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct AllCalendarsDailyEventsResponseWithTz {
+    pub day: WeekPeriod,
+    pub calendars: Vec<CalendarEventsWithTz>,
+    pub timezone: String,
 }
 
 #[cfg(test)]
@@ -48,6 +115,7 @@ mod tests {
             end: event_end,
             location: Some("Office".to_string()),
             all_day: false,
+            calendar: "test".to_string(),
         };
 
         let response = WeeklyEventsResponse {
@@ -98,6 +166,7 @@ mod tests {
                 end: event1_end,
                 location: None,
                 all_day: false,
+                calendar: "test".to_string(),
             },
             Event {
                 id: "event-2".to_string(),
@@ -107,6 +176,7 @@ mod tests {
                 end: event2_end,
                 location: None,
                 all_day: false,
+                calendar: "test".to_string(),
             },
         ];
 
@@ -135,7 +205,8 @@ mod tests {
                     "start": "2026-02-25T14:00:00Z",
                     "end": "2026-02-25T15:00:00Z",
                     "location": "Office",
-                    "all_day": false
+                    "all_day": false,
+                    "calendar": "test"
                 }
             ]
         }"#;

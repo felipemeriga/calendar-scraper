@@ -1,0 +1,10 @@
+# Calendar Scraper Configuration
+# Copy this file to calendars.toml and add your calendar URLs
+
+[[calendars]]
+name = "work"
+url = "https://outlook.office365.com/owa/calendar/YOUR_CALENDAR_ID/calendar.ics"
+
+[[calendars]]
+name = "personal"
+url = "https://calendar.google.com/calendar/ical/YOUR_EMAIL/public/basic.ics"
