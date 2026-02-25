@@ -83,6 +83,19 @@ cargo run --release
 
 The server will start on `http://127.0.0.1:8080`
 
+### Environment Variables (Optional)
+
+You can configure the server using environment variables:
+
+```bash
+# Copy the example env file
+cp .env.example .env
+
+# Edit .env with your settings
+# HOST=127.0.0.1
+# PORT=8080
+```
+
 ## Usage
 
 ### Example with cURL
