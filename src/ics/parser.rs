@@ -23,14 +23,16 @@ pub fn fetch_ics(url: &str) -> Result<Vec<Event>, IcsError> {
         return Err(IcsError::InvalidUrl("URL cannot be empty".to_string()));
     }
 
-    // Fetch ICS content
+    // Fetch ICS content with proper headers
     let client = Client::builder()
         .timeout(std::time::Duration::from_secs(30))
+        .user_agent("Mozilla/5.0 (compatible; calendar-scraper/1.0)")
         .build()
         .map_err(|e| IcsError::FetchError(e.to_string()))?;
 
     let response = client
         .get(url)
+        .header("Accept", "text/calendar,*/*")
         .send()
         .map_err(|e| IcsError::FetchError(e.to_string()))?;
 
