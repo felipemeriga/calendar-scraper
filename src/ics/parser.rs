@@ -229,6 +229,7 @@ fn parse_ics_internal(
         .map_err(|e| IcsError::ParseError(e.to_string()))?;
 
     let mut events = Vec::new();
+    let mut seen_event_ids = std::collections::HashSet::new();
 
     // Define expansion window: 1 year from now
     let now = Utc::now();
@@ -238,6 +239,12 @@ fn parse_ics_internal(
 
     for component in calendar.iter() {
         if let Some(event) = component.as_event() {
+            // Skip modified instances (RECURRENCE-ID) to avoid duplicates
+            // Modified instances are already handled by the icalendar library's expansion
+            if event.property_value("RECURRENCE-ID").is_some() {
+                continue;
+            }
+
             // Extract base event properties
             let base_id = event
                 .get_uid()
@@ -277,9 +284,16 @@ fn parse_ics_internal(
                 if let Ok(occurrences) = expand_recurring_event(rrule, &start, expansion_end) {
                     for (index, occurrence_start) in occurrences.iter().enumerate() {
                         let occurrence_end = *occurrence_start + duration;
+                        let event_id = format!("{}-occurrence-{}", base_id, index);
+
+                        // Skip if we've already seen this event ID (deduplication)
+                        if seen_event_ids.contains(&event_id) {
+                            continue;
+                        }
+                        seen_event_ids.insert(event_id.clone());
 
                         events.push(Event {
-                            id: format!("{}-occurrence-{}", base_id, index),
+                            id: event_id,
                             title: title.clone(),
                             description: description.clone(),
                             start: *occurrence_start,
@@ -291,6 +305,24 @@ fn parse_ics_internal(
                     }
                 } else {
                     // If RRULE parsing fails, just add the base event
+                    if !seen_event_ids.contains(&base_id) {
+                        seen_event_ids.insert(base_id.clone());
+                        events.push(Event {
+                            id: base_id,
+                            title,
+                            description,
+                            start,
+                            end,
+                            location,
+                            all_day,
+                            calendar: calendar_name.to_string(),
+                        });
+                    }
+                }
+            } else {
+                // Non-recurring event
+                if !seen_event_ids.contains(&base_id) {
+                    seen_event_ids.insert(base_id.clone());
                     events.push(Event {
                         id: base_id,
                         title,
@@ -302,18 +334,6 @@ fn parse_ics_internal(
                         calendar: calendar_name.to_string(),
                     });
                 }
-            } else {
-                // Non-recurring event
-                events.push(Event {
-                    id: base_id,
-                    title,
-                    description,
-                    start,
-                    end,
-                    location,
-                    all_day,
-                    calendar: calendar_name.to_string(),
-                });
             }
         }
     }
