@@ -447,8 +447,7 @@ END:VCALENDAR"#;
 
         // The icalendar crate may parse invalid content as empty calendar
         // So we check that either it errors OR returns empty events
-        if result.is_ok() {
-            let events = result.unwrap();
+        if let Ok(events) = result {
             assert_eq!(events.len(), 0, "Invalid ICS should produce no events");
         } else {
             match result {
