@@ -22,3 +22,8 @@ Thumbs.db
 
 # Config files with sensitive data
 calendars.toml
+
+# Local documentation (keep locally only)
+DEVELOPMENT_GUIDELINES.md
+POSTMAN_GUIDE.md
+PROJECT_TEMPLATE.md
